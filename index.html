@@ -435,7 +435,6 @@
               `<strong>${sequence.join(" → ")}</strong><br>` +
               `Average sightings per day: ${d.value.toFixed(2)}<br>` +
               `${d.data.rawCount ? `Raw sightings: ${d.data.rawCount}<br>` : ""}` +
-              `${d.data.daysInBucket ? `Days in bucket: ${d.data.daysInBucket}<br>` : ""}` +
               `Percent of total raw sightings: ${pct}%`
             )
             .style("left", `${event.pageX + 14}px`)
@@ -463,7 +462,6 @@
             return `${sequence}
 ${d.value.toFixed(2)} avg sightings/day
 ${d.data.rawCount} raw sightings
-${d.data.daysInBucket} days in bucket`;
           }
           return `${sequence}
 ${d.value.toFixed(2)} normalized value`;
