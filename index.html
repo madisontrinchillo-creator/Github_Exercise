@@ -147,6 +147,26 @@
       border-radius: 4px;
       color: #2f5a22;
     }
+    .takeaway-section {
+      margin-top: 24px;
+      background: #f8fff4;
+      border: 1px solid #cfe7c2;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(58, 94, 39, 0.08);
+      max-width: 900px;
+    }
+
+    .takeaway-section h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    .takeaway-section p {
+      font-size: 15px;
+      line-height: 1.6;
+    }
   </style>
 </head>
 <body>
@@ -186,6 +206,13 @@
   </div>
 
   <div class="tooltip" id="tooltip"></div>
+
+  <div class="takeaway-section">
+  <h2>📊 Takeaway</h2>
+  <p>
+    This visualization highlights how UFO sightings vary across seasons, months, and weeks while accounting for differences in time intervals. By normalizing weekly data to represent average sightings per day, the chart reveals more accurate patterns in reporting frequency rather than being skewed by uneven week lengths. Overall, sightings appear to be more concentrated in the summer months, suggesting a clear seasonal trend in UFO activity or reporting behavior. Within individual months, however, sightings are relatively evenly distributed across weeks, indicating that short-term fluctuations are minimal once differences in week length are accounted for. This suggests that variation in UFO sightings is driven more by broader monthly and seasonal patterns than by specific weeks, allowing users to explore both high-level trends and finer temporal structure.
+  </p>
+</div>
 
   <script>
     let width = 760;
