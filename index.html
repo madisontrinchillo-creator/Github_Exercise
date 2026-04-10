@@ -266,38 +266,37 @@
     }
 
     function buildHierarchy(rows, dateColumn, weekMode) {
-      const root = { name: "UFO Sightings", children: [] };
+      const root = { name: "UFO Sightings", children: [], rawCount: 0 };awCount: 0 };
       const seasonMap = new Map();
       let validRows = 0;
 
       rows.forEach(row => {
         const parsed = parseScrubbedDatetime(row[dateColumn]);
-        if (!parsed) return;
-
-        validRows += 1;
-        const season = getSeason(parsed);
+        if (!parsed) retuvalidRows += 1;
+        root.rawCount += 1;
+        const season = getSeason(parsed);        const season = getSeason(parsed);
         const month = getMonthName(parsed);
         const week = weekMode === "year" ? getWeekOfYear(parsed) : getWeekOfMonth(parsed);
 
-        if (!seasonMap.has(season)) {
-          const seasonNode = {
+       const seasonNode = {
             name: season,
             children: [],
-            color: seasonColors[season]
+            color: seasonColors[season],
+            rawCount: 0
+          }; color: seasonColors[season],
+            rawCount: 0
           };
-          seasonMap.set(season, seasonNode);
-          root.children.push(seasonNode);
+          seasonMap.set(season, seasonNoconst seasonNode = seasonMap.get(season);
+        seasonNode.rawCount += 1;ode);
         }
 
         const seasonNode = seasonMap.get(season);
+        seasonNode.rawCount += 1;
 
-        let monthNode = seasonNode.children.find(d => d.name === month);
-        if (!monthNode) {
-          monthNode = { name: month, children: [] };
-          seasonNode.children.push(monthNode);
+        lmonthNode = { name: month, children: [], rawCount: 0 };=> d.name =seasonNode.children.push(monthNode);
         }
-
-        let weekNode = monthNode.children.find(d => d.name === week);
+        monthNode.rawCount += 1; monthNode = { name: month, children: [] };
+          seasonNode.ch weekNode = monthNode.children.find(d => d.name === week);
         if (!weekNode) {
           weekNode = {
             name: week,
@@ -414,35 +413,12 @@
 
           breadcrumb.text(sequence.join(" → "));
           summaryText.html(
-            `<strong>${d.data.name}</strong><br>` +
-            `Average sightings per day: ${d.value.toFixed(2)}<br>` +
+          `Average sightings per day: ${d.value.toFixed(2)}<br>` +
             `${d.data.rawCount ? `Raw sightings: ${d.data.rawCount}<br>` : ""}` +
-            `${d.data.daysInBucket ? `Days in bucket: ${d.data.daysInBucket}<br>` : ""}` +
-            `Percent of total raw sightings: ${pct}%`
-          );
-
-          tooltip
-            .style("opacity", 1)
-            .html(
-              `<strong>${sequence.join(" → ")}</strong><br>` +
-              `Average sightings per day: ${d.value.toFixed(2)}<br>` +
+            `Percent of total raw sightings: ${pct}%`    `${d.data.rawCount ? `Raw sightings: ${d.data.rawCount}<br>` : ""}` +
+              `${d.data.daysInBucket ? `Days in bucket: ${d.data.daysInBucket}<br>` : ""`Average sightings per day: ${d.value.toFixed(2)}<br>` +
               `${d.data.rawCount ? `Raw sightings: ${d.data.rawCount}<br>` : ""}` +
-              `${d.data.daysInBucket ? `Days in bucket: ${d.data.daysInBucket}<br>` : ""}` +
-              `Percent of total raw sightings: ${pct}%`
-            )
-            .style("left", `${event.pageX + 14}px`)
-            .style("top", `${event.pageY - 18}px`);
-
-          const ancestors = new Set(d.ancestors());
-          path.classed("fade", node => !ancestors.has(node));
-        })
-        .on("mousemove", function(event) {
-          tooltip
-            .style("left", `${event.pageX + 14}px`)
-            .style("top", `${event.pageY - 18}px`);
-        })
-        .on("mouseout", function() {
-          breadcrumb.text("Hover over a segment to see the sequence.");
+              `Percent of total raw sightings: ${pct}%`equence.");
           tooltip.style("opacity", 0);
           path.classed("fade", false);
         })
@@ -475,8 +451,7 @@ ${d.value.toFixed(2)} normalized value`;
         .text("UFO");
 
       svg.append("text")
-        .attr("class", "center-text")
-        .attr("dy", 22)
+         .attr("dy", 22)
         .style("font-size", "13px")
         .text("Sightings");
 
