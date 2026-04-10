@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UFO Sightings Heatmap</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 24px;
+      background: #eef6ea;
+      color: #1f2b1f;
+    }
+
+    a.back-link {
+      display: inline-block;
+      margin-bottom: 12px;
+      color: #2f5a22;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    a.back-link:hover {
+      text-decoration: underline;
+    }
+
+    h1 {
+      margin: 0 0 18px 0;
+      font-size: 28px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel,
+    .chart-wrap,
+    .takeaway-section {
+      background: #f8fff4;
+      border: 1px solid #cfe7c2;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(58, 94, 39, 0.08);
+    }
+
+    .label {
+      font-weight: bold;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .summary {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    code {
+      background: #e8f5df;
+      padding: 2px 4px;
+      border-radius: 4px;
+      color: #2f5a22;
+    }
+
+    .chart-frame {
+      width: 100%;
+      height: 620px;
+      border: none;
+      border-radius: 8px;
+      background: white;
+    }
+
+    .takeaway-section {
+      margin-top: 24px;
+      max-width: 1200px;
+    }
+
+    .takeaway-section h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 26px;
+    }
+
+    .takeaway-section p {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <a class="back-link" href="../index.html">← Back to Home</a>
+
+  <h1>Interactive Heatmap: UFO Sightings by Day of Week and Time of Day</h1>
+
+  <div class="layout">
+    <div class="panel">
+      <div class="label">Data source</div>
+      <div class="summary">
+        This visualization uses <code>scrubbed.csv</code> and organizes sightings by
+        <strong>day of week</strong> and <strong>time of day</strong>.
+      </div>
+
+      <div class="label">Data preparation</div>
+      <div class="summary">
+        Each UFO report was grouped by the weekday it occurred on and the hour of day it was reported.
+        The result is an aggregated count of sightings for every day-and-time combination.
+      </div>
+
+      <hr>
+
+      <div class="label">What this shows</div>
+      <div class="summary">
+        This heatmap makes it easier to identify when sightings are most common. Darker and brighter cells
+        represent time slots with higher numbers of sightings, while lighter activity appears in less concentrated periods.
+      </div>
+
+      <hr>
+
+      <div class="label">Interaction</div>
+      <div class="summary">
+        Hover over any cell to view the exact day, time, and number of sightings for that combination.
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <iframe
+        class="chart-frame"
+        src="../visualizations/heatmap.html"
+        title="UFO sightings heatmap">
+      </iframe>
+    </div>
+  </div>
+
+  <div class="takeaway-section">
+    <h2>Takeaway</h2>
+    <p>
+      This visualization shows that UFO sightings are not evenly distributed across the week or throughout the day.
+      Reports are much more concentrated during evening and late-night hours, especially around the end of the week
+      and on weekends. In contrast, early morning and midday periods tend to show substantially lower activity.
+      This pattern suggests that the timing of UFO sightings may be influenced not only by when unusual aerial events
+      are noticed, but also by when people are most likely to be outside, looking at the sky, or reporting what they see.
+    </p>
+  </div>
+</body>
+</html>
