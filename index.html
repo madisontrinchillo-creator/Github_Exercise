@@ -267,101 +267,109 @@
     }
 
     function buildHierarchy(rows, dateColumn, weekMode) {
-      const root = { name: "UFO Sightings", children: [] };
-      const seasonMap = new Map();
-      let validRows = 0;
+  const root = { name: "UFO Sightings", children: [], rawCount: 0 };
+  const seasonMap = new Map();
+  let validRows = 0;
 
-      rows.forEach(row => {
-        const parsed = parseScrubbedDatetime(row[dateColumn]);
-        if (!parsed) return;
+  rows.forEach(row => {
+    const parsed = parseScrubbedDatetime(row[dateColumn]);
+    if (!parsed) return;
 
-        validRows += 1;
-        const season = getSeason(parsed);
-        const month = getMonthName(parsed);
-        const week = weekMode === "year" ? getWeekOfYear(parsed) : getWeekOfMonth(parsed);
+    validRows += 1;
+    root.rawCount += 1;
 
-        if (!seasonMap.has(season)) {
-          const seasonNode = {
-            name: season,
-            children: [],
-            color: seasonColors[season]
-          };
-          seasonMap.set(season, seasonNode);
-          root.children.push(seasonNode);
-        }
+    const season = getSeason(parsed);
+    const month = getMonthName(parsed);
+    const week = weekMode === "year" ? getWeekOfYear(parsed) : getWeekOfMonth(parsed);
 
-        const seasonNode = seasonMap.get(season);
-
-        let monthNode = seasonNode.children.find(d => d.name === month);
-        if (!monthNode) {
-          monthNode = { name: month, children: [] };
-          seasonNode.children.push(monthNode);
-        }
-
-        let weekNode = monthNode.children.find(d => d.name === week);
-        if (!weekNode) {
-          weekNode = {
-            name: week,
-            rawCount: 0,
-            daysInBucket: 0,
-            value: 0
-          };
-          monthNode.children.push(weekNode);
-        }
-
-        weekNode.rawCount += 1;
-      });
-
-      if (weekMode === "month") {
-        root.children.forEach(seasonNode => {
-          seasonNode.children.forEach(monthNode => {
-            const monthIndex = monthNames.indexOf(monthNode.name);
-            const sampleWeekNodes = monthNode.children;
-            if (monthIndex === -1 || !sampleWeekNodes.length) return;
-
-            const yearCounts = new Map();
-            rows.forEach(row => {
-              const parsed = parseScrubbedDatetime(row[dateColumn]);
-              if (!parsed) return;
-              if (parsed.getMonth() !== monthIndex) return;
-              yearCounts.set(parsed.getFullYear(), true);
-            });
-
-            const years = Array.from(yearCounts.keys());
-            const divisor = years.length || 1;
-
-            const bucketDayTotals = {
-              "Week 1": 7 * divisor,
-              "Week 2": 7 * divisor,
-              "Week 3": 7 * divisor,
-              "Week 4": 7 * divisor,
-              "Week 5": 0
-            };
-
-            years.forEach(year => {
-              const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
-              bucketDayTotals["Week 5"] += Math.max(0, daysInMonth - 28);
-            });
-
-            monthNode.children.forEach(weekNode => {
-              weekNode.daysInBucket = bucketDayTotals[weekNode.name] || 7 * divisor;
-              weekNode.value = weekNode.rawCount / weekNode.daysInBucket;
-            });
-          });
-        });
-      } else {
-        root.children.forEach(seasonNode => {
-          seasonNode.children.forEach(monthNode => {
-            monthNode.children.forEach(weekNode => {
-              weekNode.daysInBucket = 7;
-              weekNode.value = weekNode.rawCount / weekNode.daysInBucket;
-            });
-          });
-        });
-      }
-
-      return { hierarchy: root, validRows, totalRawCount: root.rawCount };
+    if (!seasonMap.has(season)) {
+      const seasonNode = {
+        name: season,
+        children: [],
+        color: seasonColors[season],
+        rawCount: 0
+      };
+      seasonMap.set(season, seasonNode);
+      root.children.push(seasonNode);
     }
+
+    const seasonNode = seasonMap.get(season);
+    seasonNode.rawCount += 1;
+
+    let monthNode = seasonNode.children.find(d => d.name === month);
+    if (!monthNode) {
+      monthNode = {
+        name: month,
+        children: [],
+        rawCount: 0
+      };
+      seasonNode.children.push(monthNode);
+    }
+    monthNode.rawCount += 1;
+
+    let weekNode = monthNode.children.find(d => d.name === week);
+    if (!weekNode) {
+      weekNode = {
+        name: week,
+        rawCount: 0,
+        daysInBucket: 0,
+        value: 0
+      };
+      monthNode.children.push(weekNode);
+    }
+
+    weekNode.rawCount += 1;
+  });
+
+  if (weekMode === "month") {
+    root.children.forEach(seasonNode => {
+      seasonNode.children.forEach(monthNode => {
+        const monthIndex = monthNames.indexOf(monthNode.name);
+        if (monthIndex === -1 || !monthNode.children.length) return;
+
+        const yearCounts = new Map();
+        rows.forEach(row => {
+          const parsed = parseScrubbedDatetime(row[dateColumn]);
+          if (!parsed) return;
+          if (parsed.getMonth() !== monthIndex) return;
+          yearCounts.set(parsed.getFullYear(), true);
+        });
+
+        const years = Array.from(yearCounts.keys());
+        const divisor = years.length || 1;
+
+        const bucketDayTotals = {
+          "Week 1": 7 * divisor,
+          "Week 2": 7 * divisor,
+          "Week 3": 7 * divisor,
+          "Week 4": 7 * divisor,
+          "Week 5": 0
+        };
+
+        years.forEach(year => {
+          const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+          bucketDayTotals["Week 5"] += Math.max(0, daysInMonth - 28);
+        });
+
+        monthNode.children.forEach(weekNode => {
+          weekNode.daysInBucket = bucketDayTotals[weekNode.name] || 7 * divisor;
+          weekNode.value = weekNode.rawCount / weekNode.daysInBucket;
+        });
+      });
+    });
+  } else {
+    root.children.forEach(seasonNode => {
+      seasonNode.children.forEach(monthNode => {
+        monthNode.children.forEach(weekNode => {
+          weekNode.daysInBucket = 7;
+          weekNode.value = weekNode.rawCount / weekNode.daysInBucket;
+        });
+      });
+    });
+  }
+
+  return { hierarchy: root, validRows, totalRawCount: root.rawCount };
+}
 
     function drawSunburst(data, totalCount, totalRawCount) {
       chartContainer.html("");
@@ -412,7 +420,7 @@
         .on("mouseover", function(event, d) {
           const sequence = d.ancestors().reverse().slice(1).map(node => node.data.name);
           const pct = ((100 * (d.data.rawCount || 0)) / totalRawCount).toFixed(1);
-
+          
           breadcrumb.text(sequence.join(" → "));
           summaryText.html(
             `<strong>${d.data.name}</strong><br>` +
