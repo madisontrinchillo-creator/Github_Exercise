@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@5.8.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300, "fill": "#0b0b1a"}, "axis": {"labelColor": "black", "labelFontSize": 12, "titleColor": "black", "titleFontSize": 13}, "title": {"anchor": "start", "color": "black", "fontSize": 16}}, "layer": [{"mark": {"type": "bar", "cornerRadiusTopLeft": 6, "cornerRadiusTopRight": 6}, "encoding": {"color": {"condition": {"param": "param_1", "value": "#39ff14", "empty": false}, "value": "#2d1b4e"}, "tooltip": [{"field": "shape", "title": "Shape", "type": "nominal"}, {"field": "count", "format": ",", "title": "Sightings", "type": "quantitative"}], "x": {"field": "count", "title": "Number of Sightings", "type": "quantitative"}, "y": {"field": "shape", "sort": "-x", "title": "Shape", "type": "nominal"}}, "name": "view_1", "title": "Top 10 UFO Shapes in U.S. Sightings (2005 Onward)"}, {"mark": {"type": "text", "align": "left", "baseline": "middle", "color": "white", "dx": 5, "fontSize": 12}, "encoding": {"text": {"field": "count", "format": ",", "type": "quantitative"}, "x": {"field": "count", "type": "quantitative"}, "y": {"field": "shape", "sort": "-x", "type": "nominal"}}}], "data": {"name": "data-c9489639f4f21d2c7c79c1002fd6db13"}, "height": 400, "params": [{"name": "param_1", "select": {"type": "point", "fields": ["shape"], "on": "mouseover"}, "views": ["view_1"]}], "width": 700, "$schema": "https://vega.github.io/schema/vega-lite/v5.8.0.json", "datasets": {"data-c9489639f4f21d2c7c79c1002fd6db13": [{"shape": "light", "count": 8788}, {"shape": "circle", "count": 4116}, {"shape": "triangle", "count": 3753}, {"shape": "fireball", "count": 3645}, {"shape": "sphere", "count": 2777}, {"shape": "oval", "count": 1816}, {"shape": "disk", "count": 1689}, {"shape": "formation", "count": 1266}, {"shape": "changing", "count": 992}, {"shape": "cigar", "count": 839}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>
