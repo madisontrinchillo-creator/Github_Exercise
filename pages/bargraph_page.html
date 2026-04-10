@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Top UFO Shapes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 24px;
+      background: #eef6ea;
+      color: #1f2b1f;
+    }
+
+    a.back-link {
+      display: inline-block;
+      margin-bottom: 12px;
+      color: #2f5a22;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    a.back-link:hover {
+      text-decoration: underline;
+    }
+
+    h1 {
+      margin: 0 0 18px 0;
+      font-size: 28px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel,
+    .chart-wrap,
+    .takeaway-section {
+      background: #f8fff4;
+      border: 1px solid #cfe7c2;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(58, 94, 39, 0.08);
+    }
+
+    .label {
+      font-weight: bold;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .instruction,
+    .summary {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    code {
+      background: #e8f5df;
+      padding: 2px 4px;
+      border-radius: 4px;
+      color: #2f5a22;
+    }
+
+    .chart-frame {
+      width: 100%;
+      height: 620px;
+      border: none;
+      background: white;
+      border-radius: 8px;
+    }
+
+    .takeaway-section {
+      margin-top: 24px;
+      max-width: 1200px;
+    }
+
+    .takeaway-section h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 30px;
+    }
+
+    .takeaway-section p {
+      font-size: 20px;
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+
+    ul.meta-list {
+      padding-left: 18px;
+      margin: 8px 0 0 0;
+    }
+
+    ul.meta-list li {
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <a class="back-link" href="../index.html">← Back to Home</a>
+
+  <h1>Interactive Bar Chart: Top 10 UFO Shapes in U.S. Sightings (2005 Onward)</h1>
+
+  <div class="layout">
+    <div class="panel">
+      <div class="label">Data source</div>
+      <div class="instruction">
+        This visualization uses <code>scrubbed.csv</code>, filtered to UFO sightings in the <code>us</code> only.
+      </div>
+
+      <div class="label">How the data was prepared</div>
+      <div class="summary">
+        The chart focuses on sightings from <strong>2005 onward</strong>. The <code>shape</code> field was cleaned by lowercasing values and removing blank, missing, <code>unknown</code>, and <code>other</code> categories before counting frequencies.
+      </div>
+
+      <hr>
+
+      <div class="label">What this chart shows</div>
+      <div class="summary">
+        This bar chart ranks the <strong>top 10 most common UFO shapes</strong> reported in U.S. sightings during the selected time period. Hovering highlights a bar and shows its count.
+      </div>
+
+      <hr>
+
+      <div class="label">Why it is interactive</div>
+      <div class="summary">
+        The chart uses an Altair hover interaction so viewers can quickly compare UFO shape categories and inspect exact counts without cluttering the design.
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <iframe class="chart-frame" src="bargraph_chart.html" title="Top 10 UFO Shapes chart"></iframe>
+    </div>
+  </div>
+
+  <div class="takeaway-section">
+    <h2>Takeaway</h2>
+    <p>
+      This visualization shows that a small number of UFO shapes account for a large share of reported sightings in the United States since 2005. In particular, light, circle, triangle, and fireball appear far more frequently than the remaining categories, suggesting that reported sightings tend to cluster around a few recurring visual descriptions rather than being evenly distributed across many shapes. This pattern may reflect both the kinds of objects witnesses most commonly believe they observe and the limited vocabulary people use when describing unfamiliar aerial events.
+    </p>
+  </div>
+</body>
+</html>
