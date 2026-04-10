@@ -300,12 +300,65 @@
 
         let weekNode = monthNode.children.find(d => d.name === week);
         if (!weekNode) {
-          weekNode = { name: week, value: 0 };
+          weekNode = {
+            name: week,
+            rawCount: 0,
+            daysInBucket: 0,
+            value: 0
+          };
           monthNode.children.push(weekNode);
         }
 
-        weekNode.value += 1;
+        weekNode.rawCount += 1;
       });
+
+      if (weekMode === "month") {
+        root.children.forEach(seasonNode => {
+          seasonNode.children.forEach(monthNode => {
+            const monthIndex = monthNames.indexOf(monthNode.name);
+            const sampleWeekNodes = monthNode.children;
+            if (monthIndex === -1 || !sampleWeekNodes.length) return;
+
+            const yearCounts = new Map();
+            rows.forEach(row => {
+              const parsed = parseScrubbedDatetime(row[dateColumn]);
+              if (!parsed) return;
+              if (parsed.getMonth() !== monthIndex) return;
+              yearCounts.set(parsed.getFullYear(), true);
+            });
+
+            const years = Array.from(yearCounts.keys());
+            const divisor = years.length || 1;
+
+            const bucketDayTotals = {
+              "Week 1": 7 * divisor,
+              "Week 2": 7 * divisor,
+              "Week 3": 7 * divisor,
+              "Week 4": 7 * divisor,
+              "Week 5": 0
+            };
+
+            years.forEach(year => {
+              const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+              bucketDayTotals["Week 5"] += Math.max(0, daysInMonth - 28);
+            });
+
+            monthNode.children.forEach(weekNode => {
+              weekNode.daysInBucket = bucketDayTotals[weekNode.name] || 7 * divisor;
+              weekNode.value = weekNode.rawCount / weekNode.daysInBucket;
+            });
+          });
+        });
+      } else {
+        root.children.forEach(seasonNode => {
+          seasonNode.children.forEach(monthNode => {
+            monthNode.children.forEach(weekNode => {
+              weekNode.daysInBucket = 7;
+              weekNode.value = weekNode.rawCount / weekNode.daysInBucket;
+            });
+          });
+        });
+      }
 
       return { hierarchy: root, validRows };
     }
@@ -363,16 +416,20 @@
           breadcrumb.text(sequence.join(" → "));
           summaryText.html(
             `<strong>${d.data.name}</strong><br>` +
-            `Sightings in this segment: ${d.value}<br>` +
-            `Share of total sightings: ${pct}%`
+            `Average sightings per day: ${d.value.toFixed(2)}<br>` +
+            `${d.data.rawCount ? `Raw sightings: ${d.data.rawCount}<br>` : ""}` +
+            `${d.data.daysInBucket ? `Days in bucket: ${d.data.daysInBucket}<br>` : ""}` +
+            `Share of total normalized value: ${pct}%`
           );
 
           tooltip
             .style("opacity", 1)
             .html(
               `<strong>${sequence.join(" → ")}</strong><br>` +
-              `Sightings: ${d.value}<br>` +
-              `Percent of total: ${pct}%`
+              `Average sightings per day: ${d.value.toFixed(2)}<br>` +
+              `${d.data.rawCount ? `Raw sightings: ${d.data.rawCount}<br>` : ""}` +
+              `${d.data.daysInBucket ? `Days in bucket: ${d.data.daysInBucket}<br>` : ""}` +
+              `Percent of total normalized value: ${pct}%`
             )
             .style("left", `${event.pageX + 14}px`)
             .style("top", `${event.pageY - 18}px`);
@@ -393,7 +450,13 @@
         .on("click", clicked);
 
       path.append("title")
-        .text(d => `${d.ancestors().reverse().slice(1).map(node => node.data.name).join(" → ")}\n${d.value} sightings`);
+        .text(d => {
+          const sequence = d.ancestors().reverse().slice(1).map(node => node.data.name).join(" → ");
+          if (d.data.rawCount) {
+            return `${sequence}\n${d.value.toFixed(2)} avg sightings/day\n${d.data.rawCount} raw sightings\n${d.data.daysInBucket} days in bucket`;
+          }
+          return `${sequence}\n${d.value.toFixed(2)} normalized value`;
+        });
 
       const parent = svg.append("circle")
         .datum(root)
@@ -457,7 +520,8 @@
 
       summaryText.html(
         `<strong>${validRows}</strong> valid sightings loaded.<br>` +
-        `Hierarchy: Season → Month → ${weekMode === "year" ? "Week of Year" : "Week of Month"}`
+        `Hierarchy: Season → Month → ${weekMode === "year" ? "Week of Year" : "Week of Month"}<br>` +
+        `Week segments are normalized as average sightings per day.`
       );
 
       breadcrumb.text("Hover over a segment to see the sequence.");
