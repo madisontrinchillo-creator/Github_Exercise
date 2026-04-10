@@ -536,9 +536,9 @@ ${d.value.toFixed(2)} normalized value`;
     }
 
         document.getElementById("resetView").addEventListener("click", () => {
-      chartContainer.html("");
       breadcrumb.text("Hover over a segment to see the sequence.");
-      summaryText.html("Loading <code>scrubbed.csv</code>... If nothing appears, make sure <code>scrubbed.csv</code> is in the same folder as this HTML file and run it through a local server.");
+      summaryText.html("Reloading <code>scrubbed.csv</code>...");
+      loadScrubbedCsv();
     });
 
         function loadScrubbedCsv() {
