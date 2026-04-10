@@ -10,8 +10,8 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 24px;
-      background: #fafafa;
-      color: #222;
+      background: #eef6ea;
+      color: #1f2b1f;
     }
 
     h1 {
@@ -21,26 +21,28 @@
 
     .layout {
       display: grid;
-      grid-template-columns: 280px minmax(700px, 1fr);
+      grid-template-columns: 280px minmax(0, 1fr);
       gap: 24px;
       align-items: start;
     }
 
     .panel,
     .chart-wrap {
-      background: white;
-      border: 1px solid #ddd;
+      background: #f8fff4;
+      border: 1px solid #cfe7c2;
       border-radius: 12px;
       padding: 16px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 8px rgba(58, 94, 39, 0.08);
+      overflow: hidden;
     }
 
     #chart {
       display: flex;
       justify-content: center;
-      align-items: center;
-      min-height: 900px;
-      overflow: auto;
+      align-items: flex-start;
+      min-height: 760px;
+      width: 100%;
+      overflow: visible;
     }
 
     .label {
@@ -63,13 +65,13 @@
 
     button {
       cursor: pointer;
-      background: #222;
+      background: #23351f;
       color: white;
       border: none;
     }
 
     button:hover {
-      background: #444;
+      background: #35532e;
     }
 
     .instruction {
@@ -116,7 +118,7 @@
     .tooltip {
       position: absolute;
       pointer-events: none;
-      background: rgba(34, 34, 34, 0.95);
+      background: rgba(31, 43, 31, 0.96);
       color: white;
       padding: 10px 12px;
       border-radius: 8px;
@@ -125,6 +127,8 @@
       opacity: 0;
       transition: opacity 0.15s ease;
       max-width: 280px;
+      border: 1px solid #7bff7b;
+      box-shadow: 0 0 14px rgba(123, 255, 123, 0.22);
     }
 
     .arc-path {
@@ -138,14 +142,15 @@
     }
 
     code {
-      background: #f4f4f4;
+      background: #e8f5df;
       padding: 2px 4px;
       border-radius: 4px;
+      color: #2f5a22;
     }
   </style>
 </head>
 <body>
-  <h1>Interactive Sequence Sunburst: UFO Sightings by Season → Month → Week</h1>
+  <h1>Alien Sequence Sunburst: UFO Sightings by Season → Month → Week</h1>
 
   <div class="layout">
     <div class="panel">
@@ -184,18 +189,18 @@
   <div class="tooltip" id="tooltip"></div>
 
   <script>
-    const width = 980;
-    const radius = width / 6;
+    let width = 760;
+    let radius = width / 6;
     const chartContainer = d3.select("#chart");
     const breadcrumb = d3.select("#breadcrumb");
     const summaryText = d3.select("#summaryText");
     const tooltip = d3.select("#tooltip");
 
     const seasonColors = {
-      Winter: "#4C78A8",
-      Spring: "#72B7B2",
-      Summer: "#F58518",
-      Fall: "#E45756"
+      Winter: "#4a4a4a",
+      Spring: "#52c41a",
+      Summer: "#7b2cff",
+      Fall: "#ff8c1a"
     };
 
     const monthToSeason = {
@@ -308,10 +313,17 @@
     function drawSunburst(data, totalCount) {
       chartContainer.html("");
 
+      const chartWidth = chartContainer.node().getBoundingClientRect().width;
+      width = Math.max(560, Math.min(900, chartWidth - 24));
+      radius = width / 6;
+
       const svg = chartContainer
         .append("svg")
         .attr("width", width)
         .attr("height", width)
+        .attr("viewBox", `0 0 ${width} ${width}`)
+        .style("max-width", "100%")
+        .style("height", "auto")
         .append("g")
         .attr("transform", `translate(${width / 2}, ${width / 2})`);
 
@@ -339,8 +351,8 @@
         .attr("class", "arc-path")
         .attr("fill", d => {
           if (d.depth === 1) return d.data.color || "#999";
-          if (d.depth === 2) return d3.color(d.parent.data.color).brighter(0.4);
-          return d3.color(d.parent.parent.data.color).brighter(0.9);
+          if (d.depth === 2) return d3.color(d.parent.data.color).brighter(1.1);
+          return d3.color(d.parent.parent.data.color).brighter(2.0);
         })
         .attr("fill-opacity", d => arcVisible(d.current) ? 1 : 0)
         .attr("d", d => arc(d.current))
@@ -432,6 +444,7 @@
     }
 
     function processRows(rows) {
+      window.currentRows = rows;
       const dateColumn = document.getElementById("dateColumn").value.trim();
       const weekMode = document.getElementById("weekMode").value;
       const { hierarchy, validRows } = buildHierarchy(rows, dateColumn, weekMode);
@@ -446,6 +459,8 @@
         `<strong>${validRows}</strong> valid sightings loaded.<br>` +
         `Hierarchy: Season → Month → ${weekMode === "year" ? "Week of Year" : "Week of Month"}`
       );
+
+      breadcrumb.text("Hover over a segment to see the sequence.");
 
       drawSunburst(hierarchy, validRows);
     }
@@ -469,6 +484,12 @@
 
     renderLegend();
     loadScrubbedCsv();
+
+    window.addEventListener("resize", () => {
+      if (window.currentRows && window.currentRows.length) {
+        processRows(window.currentRows);
+      }
+    });
   </script>
 </body>
 </html>
