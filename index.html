@@ -1,34 +1,159 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Mapping the Unknown - Temporal and Regional Trends in UFO Reports</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mapping the Unknown: UFO Sightings</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 24px;
+      background: #eef6ea;
+      color: #1f2b1f;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      margin-top: 32px;
+    }
+
+    p {
+      line-height: 1.6;
+      max-width: 900px;
+    }
+
+    .section {
+      margin-bottom: 24px;
+    }
+
+    .links a {
+      display: block;
+      margin-bottom: 8px;
+      color: #2f5a22;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+
+    .viz-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .card {
+      background: #f8fff4;
+      border: 1px solid #cfe7c2;
+      border-radius: 12px;
+      padding: 16px;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 2px 8px rgba(58, 94, 39, 0.08);
+      transition: transform 0.15s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 14px;
+    }
+
+    .ref-links a {
+      display: block;
+      margin-bottom: 6px;
+      color: #2f5a22;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>Mapping the Unknown - Temporal and Regional Trends in UFO Reports</h1>
 
-  <h2>Project Introduction</h2>
+  <h1>Mapping the Unknown: Temporal and Regional Trends in UFO Reports</h1>
 
-  <p>
-    This project explores patterns in UFO sightings across time using multiple interactive visualizations.
-  </p>
-
-  <h3>The Data</h3>
-  
+  <!-- INTRO -->
+  <div class="section">
+    <h2>Project Overview</h2>
     <p>
-    This data has 80,000 observations.
-  </p>
-    
-  <h4>Visualizations</h4>
-  <ul>
-    <li><a href="pages/map.html">map</a></li>
-    <li><a href="pages/heatmap_page.html">Interactive Heatmap: UFO Sightings by Day of Week and Time of Day</a></li>    
-    <li><a href="pages/sequentialsunburst.html">Sequential Sunburst: Normalized UFO Sightings by Season → Month → Week</a></li>
-    <li><a href="pages/bargraph_page.html">Interactive Bar Chart: Top 10 UFO Shapes in U.S. Sightings (2005 Onward)</a></li>
-    <li><a href="pages/wordcloud.html">word cloud</a></li>
-  </ul>
+      This project explores patterns in reported UFO sightings across the United States, focusing on how sightings vary over time and location. Specifically, we investigate how the time of day influences the frequency of sightings and which regions of the country experience higher concentrations of reports. UFO sightings are a compelling subject because they exist at the intersection of science, perception, and culture. While some interpret these events as potential evidence of extraterrestrial activity, others attribute them to atmospheric phenomena, aircraft, or cognitive bias. By analyzing large-scale reporting data, this project aims to uncover meaningful patterns that help explain when and where sightings are most likely to occur.
+    </p>
+  </div>
 
-  <h5>Findings and Conclusion</h5>
-  <p><a href="conclusion.html">Conclusion</a></p>
+  <!-- DATA -->
+  <div class="section">
+    <h2>About the Data</h2>
+    <p>
+      The dataset used in this project comes from the National UFO Reporting Center (NUFORC) and contains approximately 70,000 reported UFO sightings spanning over a century. Each record includes attributes such as <strong>datetime</strong>, <strong>city</strong>, <strong>state</strong>, <strong>country</strong>, <strong>shape</strong>, <strong>duration</strong>, <strong>comments</strong>, and geographic coordinates (<strong>latitude</strong> and <strong>longitude</strong>). This rich set of attributes allows us to analyze sightings across multiple dimensions, including time, location, and descriptive characteristics of each report.
+    </p>
+  </div>
+
+  <!-- VISUALIZATIONS -->
+  <div class="section">
+    <h2>Visualizations</h2>
+
+    <div class="viz-grid">
+
+      <a class="card" href="pages/sequentialsunburst.html">
+        <h3>Sunburst: Time Patterns</h3>
+        <p>Explore how sightings vary across seasons, months, and weeks using normalized data.</p>
+      </a>
+
+      <a class="card" href="pages/bargraph_page.html">
+        <h3>Bar Chart: UFO Shapes</h3>
+        <p>Compare the most commonly reported UFO shapes in the United States.</p>
+      </a>
+
+      <a class="card" href="pages/heatmap_page.html">
+        <h3>Heatmap: Time of Day</h3>
+        <p>See how sightings vary by day of week and time of day.</p>
+      </a>
+
+      <div class="card">
+        <h3>Word Cloud: Descriptions</h3>
+        <p>Visualizes the most common words used in UFO sighting reports.</p>
+      </div>
+
+      <div class="card">
+        <h3>Map: Geographic Distribution</h3>
+        <p>Shows where UFO sightings are most concentrated across the U.S.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- REFERENCES -->
+  <div class="section">
+    <h2>References</h2>
+
+    <div class="ref-links">
+      <a href="https://www.esd.whs.mil/Portals/54/Documents/FOID/Reading%20Room/UFOsandUAPs/nas_re1.pdf?ver=2017-05-22-113513-883" target="_blank">
+        National Academy of Sciences UFO Report Review
+      </a>
+
+      <a href="https://www.nature.com/articles/s41598-023-49527-x" target="_blank">
+        Environmental Analysis of Public UAP Sightings (Nature Scientific Reports)
+      </a>
+    </div>
+
+    <p>
+      Prior research suggests that most UFO sightings can be explained by known phenomena such as aircraft or atmospheric conditions, while patterns in sightings are often influenced by environmental visibility and human observation behavior.
+    </p>
+  </div>
 
 </body>
 </html>
