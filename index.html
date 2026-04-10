@@ -150,7 +150,7 @@
   </style>
 </head>
 <body>
-  <h1>Alien Sequence Sunburst: UFO Sightings by Season → Month → Week</h1>
+  <h1>Alien Sequence Sunburst: Normalized UFO Sightings by Season → Month → Week</h1>
 
   <div class="layout">
     <div class="panel">
@@ -360,10 +360,10 @@
         });
       }
 
-      return { hierarchy: root, validRows };
+      return { hierarchy: root, validRows, totalRawCount: root.rawCount };
     }
 
-    function drawSunburst(data, totalCount) {
+    function drawSunburst(data, totalCount, totalRawCount) {
       chartContainer.html("");
 
       const chartWidth = chartContainer.node().getBoundingClientRect().width;
@@ -411,7 +411,7 @@
         .attr("d", d => arc(d.current))
         .on("mouseover", function(event, d) {
           const sequence = d.ancestors().reverse().slice(1).map(node => node.data.name);
-          const pct = ((100 * d.value) / totalCount).toFixed(1);
+          const pct = ((100 * (d.data.rawCount || 0)) / totalRawCount).toFixed(1);
 
           breadcrumb.text(sequence.join(" → "));
           summaryText.html(
@@ -419,7 +419,7 @@
             `Average sightings per day: ${d.value.toFixed(2)}<br>` +
             `${d.data.rawCount ? `Raw sightings: ${d.data.rawCount}<br>` : ""}` +
             `${d.data.daysInBucket ? `Days in bucket: ${d.data.daysInBucket}<br>` : ""}` +
-            `Share of total normalized value: ${pct}%`
+            `Percent of total raw sightings: ${pct}%`
           );
 
           tooltip
@@ -429,7 +429,7 @@
               `Average sightings per day: ${d.value.toFixed(2)}<br>` +
               `${d.data.rawCount ? `Raw sightings: ${d.data.rawCount}<br>` : ""}` +
               `${d.data.daysInBucket ? `Days in bucket: ${d.data.daysInBucket}<br>` : ""}` +
-              `Percent of total normalized value: ${pct}%`
+              `Percent of total raw sightings: ${pct}%`
             )
             .style("left", `${event.pageX + 14}px`)
             .style("top", `${event.pageY - 18}px`);
@@ -453,9 +453,13 @@
         .text(d => {
           const sequence = d.ancestors().reverse().slice(1).map(node => node.data.name).join(" → ");
           if (d.data.rawCount) {
-            return `${sequence}\n${d.value.toFixed(2)} avg sightings/day\n${d.data.rawCount} raw sightings\n${d.data.daysInBucket} days in bucket`;
+            return `${sequence}
+${d.value.toFixed(2)} avg sightings/day
+${d.data.rawCount} raw sightings
+${d.data.daysInBucket} days in bucket`;
           }
-          return `${sequence}\n${d.value.toFixed(2)} normalized value`;
+          return `${sequence}
+${d.value.toFixed(2)} normalized value`;
         });
 
       const parent = svg.append("circle")
@@ -510,7 +514,7 @@
       window.currentRows = rows;
       const dateColumn = document.getElementById("dateColumn").value.trim();
       const weekMode = document.getElementById("weekMode").value;
-      const { hierarchy, validRows } = buildHierarchy(rows, dateColumn, weekMode);
+      const { hierarchy, validRows, totalRawCount } = buildHierarchy(rows, dateColumn, weekMode);
 
       if (!hierarchy.children.length) {
         summaryText.text("No valid rows were found. Make sure the file is scrubbed.csv and the date column is datetime.");
@@ -521,12 +525,13 @@
       summaryText.html(
         `<strong>${validRows}</strong> valid sightings loaded.<br>` +
         `Hierarchy: Season → Month → ${weekMode === "year" ? "Week of Year" : "Week of Month"}<br>` +
-        `Week segments are normalized as average sightings per day.`
+        `Week segments are normalized as average sightings per day.<br>` +
+        `Total raw sightings: ${totalRawCount}`
       );
 
       breadcrumb.text("Hover over a segment to see the sequence.");
 
-      drawSunburst(hierarchy, validRows);
+      drawSunburst(hierarchy, validRows, totalRawCount);
     }
 
         document.getElementById("resetView").addEventListener("click", () => {
