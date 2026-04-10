@@ -570,14 +570,24 @@ ${d.value.toFixed(2)} normalized value`;
     });
 
         function loadScrubbedCsv() {
-      d3.csv("../scrubbed.csv").then(rows => {
-                processRows(rows);
-      }).catch(error => {
-        summaryText.html("Could not load <code>scrubbed.csv</code>. Put <code>scrubbed.csv</code> in the same folder as this HTML file and run a local server, such as <code>python3 -m http.server</code>.");
-        chartContainer.html("");
-        console.error(error);
+  d3.csv("../scrubbed.csv").then(rows => {
+    const cleanedRows = rows.map(row => {
+      const cleanedRow = {};
+      Object.keys(row).forEach(key => {
+        const cleanKey = key.replace(/^\uFEFF/, "").trim();
+        cleanedRow[cleanKey] = row[key];
       });
-    }
+      return cleanedRow;
+    });
+
+    console.log("CSV columns:", Object.keys(cleanedRows[0] || {}));
+    processRows(cleanedRows);
+  }).catch(error => {
+    summaryText.html("Could not load <code>scrubbed.csv</code>.");
+    chartContainer.html("");
+    console.error(error);
+  });
+}
 
     renderLegend();
     loadScrubbedCsv();
