@@ -21,7 +21,7 @@
 
     .layout {
       display: grid;
-      grid-template-columns: 320px 1fr;
+      grid-template-columns: 280px minmax(700px, 1fr);
       gap: 24px;
       align-items: start;
     }
@@ -39,7 +39,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 720px;
+      min-height: 900px;
+      overflow: auto;
     }
 
     .label {
@@ -148,11 +149,9 @@
 
   <div class="layout">
     <div class="panel">
-      <label class="label" for="csvFile">Upload CSV</label>
-      <input type="file" id="csvFile" accept=".csv" />
+      <div class="label">Data source</div>
       <div class="instruction">
-        Use <code>scrubbed.csv</code> and keep the date column set to <code>datetime</code>.
-        This version is built specifically for the common UFO scrubbed dataset format.
+        This visualization uses only <code>scrubbed.csv</code> with the <code>datetime</code> column. No other file upload is needed.
       </div>
 
       <label class="label" for="dateColumn">Date column name</label>
@@ -164,7 +163,6 @@
         <option value="year">Week of year</option>
       </select>
 
-      <button id="loadSample">Load built-in sample data</button>
       <button id="resetView">Reset chart</button>
 
       <div class="summary" id="summaryText">
@@ -186,7 +184,7 @@
   <div class="tooltip" id="tooltip"></div>
 
   <script>
-    const width = 760;
+    const width = 980;
     const radius = width / 6;
     const chartContainer = d3.select("#chart");
     const breadcrumb = d3.select("#breadcrumb");
@@ -452,58 +450,25 @@
       drawSunburst(hierarchy, validRows);
     }
 
-    document.getElementById("csvFile").addEventListener("change", event => {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = e => {
-        const rows = d3.csvParse(e.target.result);
-        processRows(rows);
-      };
-      reader.readAsText(file);
-    });
-
-    document.getElementById("resetView").addEventListener("click", () => {
+        document.getElementById("resetView").addEventListener("click", () => {
       chartContainer.html("");
       breadcrumb.text("Hover over a segment to see the sequence.");
-      summaryText.html("Upload <code>scrubbed.csv</code> or load the sample data to generate the sunburst.");
+      summaryText.html("Loading <code>scrubbed.csv</code>... If nothing appears, make sure <code>scrubbed.csv</code> is in the same folder as this HTML file and run it through a local server.");
     });
 
-    document.getElementById("loadSample").addEventListener("click", () => {
-      const sampleRows = [
-        { datetime: "12/5/2025 21:00" },
-        { datetime: "12/18/2025 20:30" },
-        { datetime: "1/11/2025 22:10" },
-        { datetime: "2/3/2025 19:45" },
-        { datetime: "3/9/2025 23:15" },
-        { datetime: "3/15/2025 21:25" },
-        { datetime: "4/21/2025 20:20" },
-        { datetime: "4/25/2025 23:10" },
-        { datetime: "5/30/2025 22:40" },
-        { datetime: "6/2/2025 21:55" },
-        { datetime: "6/18/2025 23:05" },
-        { datetime: "6/25/2025 22:15" },
-        { datetime: "7/4/2025 22:30" },
-        { datetime: "7/7/2025 23:00" },
-        { datetime: "7/13/2025 22:20" },
-        { datetime: "7/15/2025 21:35" },
-        { datetime: "7/20/2025 21:50" },
-        { datetime: "7/29/2025 20:45" },
-        { datetime: "8/1/2025 21:05" },
-        { datetime: "8/14/2025 20:10" },
-        { datetime: "9/2/2025 19:30" },
-        { datetime: "9/17/2025 22:00" },
-        { datetime: "10/10/2025 21:40" },
-        { datetime: "10/28/2025 20:25" },
-        { datetime: "11/12/2025 19:50" }
-      ];
-
-      document.getElementById("dateColumn").value = "datetime";
-      processRows(sampleRows);
-    });
+        function loadScrubbedCsv() {
+      d3.csv("scrubbed.csv").then(rows => {
+        document.getElementById("dateColumn").value = "datetime";
+        processRows(rows);
+      }).catch(error => {
+        summaryText.html("Could not load <code>scrubbed.csv</code>. Put <code>scrubbed.csv</code> in the same folder as this HTML file and run a local server, such as <code>python3 -m http.server</code>.");
+        chartContainer.html("");
+        console.error(error);
+      });
+    }
 
     renderLegend();
+    loadScrubbedCsv();
   </script>
 </body>
 </html>
