@@ -570,7 +570,7 @@ ${d.value.toFixed(2)} normalized value`;
     });
 
         function loadScrubbedCsv() {
-      d3.csv("scrubbed.csv").then(rows => {
+      d3.csv("../scrubbed.csv").then(rows => {
                 processRows(rows);
       }).catch(error => {
         summaryText.html("Could not load <code>scrubbed.csv</code>. Put <code>scrubbed.csv</code> in the same folder as this HTML file and run a local server, such as <code>python3 -m http.server</code>.");
