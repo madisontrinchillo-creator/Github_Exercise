@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UFO Word Cloud</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0b0b1a;
+      color: white;
+    }
+
+    .header {
+      padding: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      border-bottom: 1px solid #333;
+    }
+
+    .container {
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      padding: 20px;
+      background-color: #12122a;
+      border-right: 1px solid #333;
+    }
+
+    .main {
+      flex-grow: 1;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .main img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+
+    .section {
+      margin-top: 20px;
+    }
+
+    .takeaway {
+      padding: 20px;
+      border-top: 1px solid #333;
+      background-color: #12122a;
+    }
+
+    a {
+      color: #39ff14;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    UFO Word Cloud: Descriptions of Sightings
+  </div>
+
+  <div class="container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+      <div class="section">
+        <h3>Data Source</h3>
+        <p>
+          This visualization uses UFO sighting reports from the National UFO Reporting Center (NUFORC).
+          The dataset includes approximately 70,000 records with attributes such as datetime, location,
+          shape, and user-submitted comments describing each sighting.
+        </p>
+      </div>
+
+      <div class="section">
+        <h3>Processing</h3>
+        <p>
+          The word cloud is generated from cleaned comment text, filtered to U.S. sightings from 2010 onward
+          with durations longer than two minutes. Common noise such as URLs was removed before generating the visualization.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Visualization -->
+    <div class="main">
+      <img src="../visualizations/ufo_wordcloud.png" alt="UFO Word Cloud">
+    </div>
+
+  </div>
+
+  <!-- Takeaway -->
+  <div class="takeaway">
+    <h3>Key Takeaways</h3>
+    <p>
+      This word cloud highlights the most frequently used terms in UFO sighting descriptions, revealing
+      how individuals commonly interpret and describe unexplained aerial phenomena. Words such as 
+      “light,” “object,” “orange,” and “flying” dominate the visualization, suggesting that sightings 
+      are often described in terms of brightness, motion, and color rather than clearly defined structures. 
+      The presence of geometric terms like “triangle,” “circle,” and “orb” indicates recurring visual 
+      patterns in reported sightings. Overall, this visualization suggests that while UFO experiences vary, 
+      people tend to rely on a consistent set of descriptive language when reporting what they observe, 
+      reflecting shared perception patterns and the ambiguity of these events.
+    </p>
+  </div>
+
+</body>
+</html>
