@@ -1,113 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>UFO Word Cloud</title>
 
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #0b0b1a;
-      color: white;
+      margin: 0;
+      padding: 24px;
+      background: #eef6ea;
+      color: #1f2b1f;
     }
 
-    .header {
-      padding: 20px;
-      font-size: 28px;
+    a.back-link {
+      display: inline-block;
+      margin-bottom: 12px;
+      color: #2f5a22;
       font-weight: bold;
-      border-bottom: 1px solid #333;
+      text-decoration: none;
     }
 
-    .container {
-      display: flex;
+    a.back-link:hover {
+      text-decoration: underline;
     }
 
-    .sidebar {
-      width: 250px;
-      padding: 20px;
-      background-color: #12122a;
-      border-right: 1px solid #333;
+    h1 {
+      margin: 0 0 18px 0;
+      font-size: 28px;
     }
 
-    .main {
-      flex-grow: 1;
-      padding: 20px;
-      text-align: center;
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
     }
 
-    .main img {
-      max-width: 100%;
+    .panel,
+    .chart-wrap,
+    .takeaway-section {
+      background: #f8fff4;
+      border: 1px solid #cfe7c2;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(58, 94, 39, 0.08);
+    }
+
+    .label {
+      font-weight: bold;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .instruction,
+    .summary {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    code {
+      background: #e8f5df;
+      padding: 2px 4px;
+      border-radius: 4px;
+      color: #2f5a22;
+    }
+
+    .chart-image {
+      width: 100%;
       border-radius: 8px;
     }
 
-    .section {
-      margin-top: 20px;
+    .takeaway-section {
+      margin-top: 24px;
+      max-width: 1200px;
     }
 
-    .takeaway {
-      padding: 20px;
-      border-top: 1px solid #333;
-      background-color: #12122a;
+    .takeaway-section h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 30px;
     }
 
-    a {
-      color: #39ff14;
-      text-decoration: none;
+    .takeaway-section p {
+      font-size: 20px;
+      line-height: 1.6;
+      margin-bottom: 0;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Header -->
-  <div class="header">
-    UFO Word Cloud: Descriptions of Sightings
-  </div>
+  <!-- ✅ Back button -->
+  <a class="back-link" href="../index.html">← Back to Home</a>
 
-  <div class="container">
+  <h1>UFO Word Cloud: Descriptions of Sightings</h1>
+
+  <div class="layout">
 
     <!-- Sidebar -->
-    <div class="sidebar">
-
-      <div class="section">
-        <h3>Data Source</h3>
-        <p>
-          This visualization uses UFO sighting reports from the National UFO Reporting Center (NUFORC).
-          The dataset includes approximately 70,000 records with attributes such as datetime, location,
-          shape, and user-submitted comments describing each sighting.
-        </p>
+    <div class="panel">
+      <div class="label">Data source</div>
+      <div class="instruction">
+        This visualization uses <code>scrubbed.csv</code> from the National UFO Reporting Center (NUFORC), containing approximately 70,000 UFO sighting reports with attributes such as datetime, location, and comments.
       </div>
 
-      <div class="section">
-        <h3>Processing</h3>
-        <p>
-          The word cloud is generated from cleaned comment text, filtered to U.S. sightings from 2010 onward
-          with durations longer than two minutes. Common noise such as URLs was removed before generating the visualization.
-        </p>
+      <div class="label">How the data was prepared</div>
+      <div class="summary">
+        The word cloud is generated from the <code>comments</code> field. Data was filtered to U.S. sightings from <strong>2010 onward</strong> with durations longer than two minutes. Text was cleaned by removing noise such as URLs and combining all descriptions into a single corpus for analysis.
       </div>
 
+      <hr>
+
+      <div class="label">Interpretation</div>
+      <div class="summary">
+        Larger words indicate more frequently used terms in UFO sighting descriptions. This helps reveal common patterns in how people describe unexplained aerial phenomena.
+      </div>
     </div>
 
     <!-- Visualization -->
-    <div class="main">
-      <img src="../visualizations/ufo_wordcloud.png" alt="UFO Word Cloud">
+    <div class="chart-wrap">
+      <img class="chart-image" src="../visualizations/ufo_wordcloud.png" alt="UFO Word Cloud">
     </div>
 
   </div>
 
   <!-- Takeaway -->
-  <div class="takeaway">
-    <h3>Key Takeaways</h3>
+  <div class="takeaway-section">
+    <h2>Takeaway</h2>
     <p>
-      This word cloud highlights the most frequently used terms in UFO sighting descriptions, revealing
-      how individuals commonly interpret and describe unexplained aerial phenomena. Words such as 
-      “light,” “object,” “orange,” and “flying” dominate the visualization, suggesting that sightings 
-      are often described in terms of brightness, motion, and color rather than clearly defined structures. 
-      The presence of geometric terms like “triangle,” “circle,” and “orb” indicates recurring visual 
-      patterns in reported sightings. Overall, this visualization suggests that while UFO experiences vary, 
-      people tend to rely on a consistent set of descriptive language when reporting what they observe, 
-      reflecting shared perception patterns and the ambiguity of these events.
+      This visualization highlights the most common words used in UFO sighting descriptions, revealing consistent patterns in how people interpret and report unexplained events. Terms such as “light,” “object,” “orange,” and “flying” dominate the dataset, suggesting that sightings are often described in terms of brightness, motion, and color rather than clearly identifiable structures. The presence of geometric descriptors like “triangle,” “circle,” and “orb” indicates recurring visual themes across reports. Overall, this suggests that while individual sightings vary, people rely on a shared and limited vocabulary to describe ambiguous aerial phenomena, reflecting both common perception patterns and the inherent uncertainty of these experiences.
     </p>
   </div>
 
