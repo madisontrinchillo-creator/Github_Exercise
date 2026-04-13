@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UFO Sightings Map</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 24px;
+      background: #eef6ea;
+      color: #1f2b1f;
+    }
+
+    a.back-link {
+      display: inline-block;
+      margin-bottom: 12px;
+      color: #2f5a22;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    a.back-link:hover {
+      text-decoration: underline;
+    }
+
+    h1 {
+      margin: 0 0 18px 0;
+      font-size: 28px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel,
+    .chart-wrap,
+    .takeaway-section {
+      background: #f8fff4;
+      border: 1px solid #cfe7c2;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(58, 94, 39, 0.08);
+    }
+
+    .label {
+      font-weight: bold;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .instruction,
+    .summary {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    code {
+      background: #e8f5df;
+      padding: 2px 4px;
+      border-radius: 4px;
+      color: #2f5a22;
+    }
+
+    .tableauPlaceholder {
+      width: 100%;
+    }
+
+    .takeaway-section {
+      margin-top: 24px;
+      max-width: 1200px;
+    }
+
+    .takeaway-section h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 30px;
+    }
+
+    .takeaway-section p {
+      font-size: 20px;
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <a class="back-link" href="../index.html">← Back to Home</a>
+
+  <h1>Interactive Map: Geographic Distribution of UFO Sightings</h1>
+
+  <div class="layout">
+    <div class="panel">
+      <div class="label">Data source</div>
+      <div class="instruction">
+        This visualization uses <code>scrubbed.csv</code> from the National UFO Reporting Center (NUFORC), including geographic coordinates for reported UFO sightings across the United States.
+      </div>
+
+      <div class="label">How the data was prepared</div>
+      <div class="summary">
+        The map uses latitude and longitude data from individual sighting reports to display where UFO sightings are most concentrated. By plotting reports spatially, the visualization helps reveal regional clusters and broader geographic patterns.
+      </div>
+
+      <hr>
+
+      <div class="label">Interaction</div>
+      <div class="summary">
+        Use the Tableau map controls to zoom, pan, and inspect areas of higher and lower sighting concentration across the country.
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <div class='tableauPlaceholder' id='viz1776041740092' style='position: relative'>
+        <noscript>
+          <a href='#'>
+            <img
+              alt='UFO Heatmap'
+              src='https://public.tableau.com/static/images/uf/ufo_heatmap/UFOHeatmap/1_rss.png'
+              style='border: none; width: 100%;'
+            />
+          </a>
+        </noscript>
+        <object class='tableauViz' style='display:none;'>
+          <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+          <param name='embed_code_version' value='3' />
+          <param name='site_root' value='' />
+          <param name='name' value='ufo_heatmap/UFOHeatmap' />
+          <param name='tabs' value='no' />
+          <param name='toolbar' value='yes' />
+          <param name='static_image' value='https://public.tableau.com/static/images/uf/ufo_heatmap/UFOHeatmap/1.png' />
+          <param name='animate_transition' value='yes' />
+          <param name='display_static_image' value='yes' />
+          <param name='display_spinner' value='yes' />
+          <param name='display_overlay' value='yes' />
+          <param name='display_count' value='yes' />
+          <param name='language' value='en-US' />
+          <param name='filter' value='publish=yes' />
+        </object>
+      </div>
+    </div>
+  </div>
+
+  <div class="takeaway-section">
+    <h2>Takeaway</h2>
+    <p>
+      This visualization shows that UFO sightings are not evenly distributed across the United States. Instead, reports tend to cluster in specific regions, particularly along the coasts and in more densely populated areas. These spatial patterns suggest that UFO reporting may be influenced not only by where unusual aerial phenomena are observed, but also by population density, visibility conditions, and the likelihood that people in certain regions are more able or willing to report what they see. Overall, the map highlights strong geographic concentration rather than a uniform national pattern.
+    </p>
+  </div>
+
+  <script type='text/javascript'>
+    var divElement = document.getElementById('viz1776041740092');
+    var vizElement = divElement.getElementsByTagName('object')[0];
+    vizElement.style.width = '100%';
+    vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
+    var scriptElement = document.createElement('script');
+    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+    vizElement.parentNode.insertBefore(scriptElement, vizElement);
+  </script>
+</body>
+</html>
